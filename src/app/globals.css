@@ -1,0 +1,187 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Design system — CSS-first Tailwind v4 config.
+   Values extracted verbatim from the reference index_5.html.
+--------------------------------------------------------------------------- */
+@theme {
+  --color-paper: #eeece6;
+  --color-paper-2: #e6e3db;
+  --color-ink: #161511;
+  --color-muted: #6f6b60;
+  --color-faint: #a5a196;
+  --color-moss: #2e4b34;
+
+  --color-hairline: rgba(22, 21, 17, 0.14);
+  --color-hairline-strong: rgba(22, 21, 17, 0.32);
+
+  /* font families are wired to the next/font CSS variables set on <html> */
+  --font-serif: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-archivo), system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+}
+
+/* Section horizontal padding token (fluid) */
+:root {
+  --pad: clamp(18px, 4.5vw, 64px);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-moss);
+  color: var(--color-paper);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-moss);
+  outline-offset: 3px;
+}
+
+/* ---- shared magazine primitives ---- */
+.lbl {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-muted);
+}
+.lbl-moss {
+  color: var(--color-moss);
+}
+em.it {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+/* ---- custom cursor ---- */
+#cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-ink);
+  pointer-events: none;
+  z-index: 2500;
+  transform: translate(-50%, -50%);
+  transition:
+    width 0.25s,
+    height 0.25s,
+    background 0.25s;
+}
+#cursor.big {
+  width: 56px;
+  height: 56px;
+  background: var(--color-moss);
+  opacity: 0.9;
+}
+@media (hover: none) {
+  #cursor {
+    display: none;
+  }
+}
+
+/* ---- status dot (pulsing moss) ---- */
+@keyframes pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-moss);
+  animation: pulse 2.2s infinite;
+}
+
+/* ---- marquee ticker ---- */
+@keyframes marq {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.ticker {
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 16px 0;
+  border-top: 1px solid var(--color-hairline-strong);
+  border-bottom: 1px solid var(--color-hairline-strong);
+  margin-top: clamp(50px, 6vw, 80px);
+}
+.ticker-track {
+  display: inline-flex;
+  animation: marq 30s linear infinite;
+}
+.ticker span {
+  display: inline-flex;
+  align-items: center;
+  gap: 26px;
+  padding: 0 26px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(18px, 2.4vw, 28px);
+  color: var(--color-muted);
+}
+.ticker span::after {
+  content: "·";
+  color: var(--color-moss);
+}
+
+/* ---- hero headline rise (mask reveal) ---- */
+@keyframes rise {
+  from {
+    transform: translateY(112%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+  #cursor {
+    display: none;
+  }
+}

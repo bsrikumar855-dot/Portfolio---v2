@@ -5,12 +5,14 @@ import { useReveal } from "@/lib/useReveal";
 import { asset } from "@/lib/asset";
 
 export default function PhotoBand() {
-  const { ref, shown } = useReveal<HTMLElement>(0.2);
+  // Observe the UNCLIPPED wrapper, not the figure: an element with
+  // clip-path: inset(0 0 100%) has zero visible area, so IntersectionObserver
+  // would report it as never intersecting and the reveal would never fire.
+  const { ref, shown } = useReveal<HTMLDivElement>(0.15);
 
   return (
-    <div className="px-[var(--pad)]">
+    <div ref={ref} className="px-[var(--pad)]">
       <figure
-        ref={ref}
         className={`img-reveal relative overflow-hidden bg-paper-2 ${
           shown ? "is-in" : ""
         }`}

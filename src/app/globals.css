@@ -170,6 +170,36 @@ em.it {
   }
 }
 
+/* ---- scroll reveals (IntersectionObserver-driven, CSS transitions) ----
+   CSS transitions reach their final computed value even when the animation
+   frame loop is throttled, so revealed content can never get stuck hidden. */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.img-reveal {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 1.1s cubic-bezier(0.77, 0, 0.18, 1);
+}
+.img-reveal.is-in {
+  clip-path: inset(0 0 0 0);
+}
+.img-reveal img {
+  transform: scale(1.06);
+  transition: transform 1.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.img-reveal.is-in img {
+  transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -183,5 +213,14 @@ em.it {
   }
   #cursor {
     display: none;
+  }
+  .reveal,
+  .img-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+  .img-reveal img {
+    transform: none !important;
   }
 }
